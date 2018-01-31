@@ -1,3 +1,7 @@
+
+This is forked version of the i-PI interface by Johan McQuillan (johan.mcquillan.13@ucl.ac.uk)
+of the ICE Group at UCL
+
 ============
 PEP-8 UPDATE
 ============

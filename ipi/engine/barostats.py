@@ -336,8 +336,8 @@ class BaroBZP(Barostat):
         self.nm.qnm[0, :] += ((expq - expp) / (2.0 * v)) * (dstrip(self.nm.pnm)[0, :] / m)
         self.nm.pnm[0, :] *= expp
 
-        self.cell.h *= expq
-
+        self.cell.h[0, 0] *= expq
+        self.cell.h[1, 1] *= expq
 
 class BaroRGB(Barostat):
     """Raiteri-Gale-Bussi constant stress barostat class (JPCM 23, 334213, 2011).
@@ -523,4 +523,12 @@ class BaroRGB(Barostat):
             self.nm.qnm[0, 3 * i:3 * (i + 1)] += np.dot(np.dot(invert_ut3x3(v), (expq - expp) / (2.0)), dstrip(self.nm.pnm)[0, 3 * i:3 * (i + 1)] / m[i])
             self.nm.pnm[0, 3 * i:3 * (i + 1)] = np.dot(expp, self.nm.pnm[0, 3 * i:3 * (i + 1)])
 
-        self.cell.h = np.dot(expq, self.cell.h)
+        #self.cell.h[:2, :2] = np.dot(expq[:2, :2], self.cell.h[:2, :2])
+        #self.cell.h[2, :2] = 0.
+        #self.cell.h[:2, 2] = 0.
+
+        # Only expand and contract cell parallel to x-y axes; do not shear or change z
+        self.cell.h = np.array([[expq[0, 0]*self.cell.h[0, 0],    0.,   0.],
+                                [0.,    expq[1, 1]*self.cell.h[1, 1],   0.],
+                                [0.,    0.,             self.cell.h[2, 2]]])
+
