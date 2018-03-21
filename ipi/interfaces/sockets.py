@@ -661,7 +661,7 @@ class InterfaceSocket(object):
                 r["status"] = "Done"
                 r["t_finished"] = time.time()
                 dt = r["t_finished"] - r["t_dispatched"]
-                info(" @CUSTOM:    Time of current step = {} s".format(dt))
+                info(" @CUSTOM:    Time of current step = {} s".format(dt), verbosity.high)
                 c.lastreq = r["id"]  # saves the ID of the request that the client has just processed
                 self.jobs = [w for w in self.jobs if not (w[0] is r and w[1] is c)]  # removes pair in a robust way
 
